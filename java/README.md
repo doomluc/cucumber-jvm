@@ -1,7 +1,8 @@
 Cucumber Java
 =============
 
-Provides annotation based step definitions. To use add the `cucumber-java` dependency to your pom.xml:
+Provides annotation based step definitions. To use add the `cucumber-java` 
+dependency to your pom.xml:
 
 ```xml
 <dependencies>
@@ -18,8 +19,9 @@ Provides annotation based step definitions. To use add the `cucumber-java` depen
 
 ## Step Definitions
 
-Declare a step definition by annotating a method. It is possible use the same method for multiple steps by repeating
-the annotation. For localized annotations import the annotations from `io.cucumber.java.<ISO2 Language Code>.*`
+Declare a step definition by annotating a method. It is possible use the same
+method for multiple steps by repeating the annotation. For localized annotations
+import the annotations from `io.cucumber.java.<ISO2 Language Code>.*`
 
 ```java
 package com.example.app;
@@ -52,22 +54,39 @@ public class CalculatorSteps{
 }
 ```
 
+TODO: Link to cucumber/regular expressions.
+
+
+### Data tables
+
+TODO: Show use of regular DataTable object
+
+### Doc strings
+
+TODO: Show use of regular DocString object
+
 ## Hooks
 
-Declare hooks that will be executed before/after each scenario/step by annotating a method. The method may declare an
-argument of type `io.cucumber.java.Scenario`.
+Declare hooks that will be executed before/after each scenario/step by
+annotating a method. The method may declare an argument of type 
+`io.cucumber.java.Scenario`.
 
  * `@Before` 
  * `@After`
  * `@BeforeStep`
  * `@AfterStep`
  
+TODO: Add Examples
+ 
 ## Transformers 
+
+TODO: Explain that parameters, data tables and docs strings can be transformed
+into java objects
 
 ### Parameter Type
 
-Step definition parameter types can be declared by using `@ParameterType`. The name of the annotated method will be used
-as the parameter name.
+Step definition parameter types can be declared by using `@ParameterType`. The
+name of the annotated method will be used as the parameter name.
 
 ```java
 package com.example.app;
@@ -93,15 +112,14 @@ public class Steps {
 
 ### Data Table Type
 
-Data table types can be declared by annotating a method with `@DataTableType`. 
-Depending on the parameter type this will be either a: 
- * `String` -> `io.cucumber.datatable.TableCellTranformer`
- * `Map<String,String>` -> `io.cucumber.datatable.TableEntryTransformer`
- * `List<String` -> `io.cucumber.datatable.TableRowTranformer`
- * `DataTable` -> `io.cucumber.datatable.TableTransformer`
+Using a data table type will allow you to convert   
 
-For a full list of transformations that can be achieved with data table types
-see [cucumber/datatable](https://github.com/cucumber/cucumber/tree/master/datatable)
+```feature
+    Given a list of authors in a table
+      | firstName   | lastName | birthDate  |
+      | Annie M. G. | Schmidt  | 1911-03-20 |
+      | Roald       | Dahl     | 1916-09-13 |
+```
 
 ```java
 package com.example.app;
@@ -121,22 +139,29 @@ public class Steps {
             entry.get("lastName"),
             entry.get("birthDate"));
     }
-    
-    @DataTableType
-    public Author authorEntryTransformer(List<String> row) {
-        return new Author(
-            row.get(0),
-            row.get(0),
-            row.get(0));
+
+    @Given("a list of authors in a table")
+    public void aListOfAuthorsInATable(List<Author> authors) {
+        
     }
 }
-
 ```
+
+Data table types can be declared by annotating a method with `@DataTableType`. 
+Depending on the parameter type this will be either a: 
+ * `String` -> `io.cucumber.datatable.TableCellTranformer`
+ * `Map<String,String>` -> `io.cucumber.datatable.TableEntryTransformer`
+ * `List<String` -> `io.cucumber.datatable.TableRowTranformer`
+ * `DataTable` -> `io.cucumber.datatable.TableTransformer`
+
+For a full list of transformations that can be achieved with data table types
+see [cucumber/datatable](https://github.com/cucumber/cucumber/tree/master/datatable)
 
 ### Default Transformers
 
-Default transformers allow you to specific a transformer that will be used when there is no transform defined. This can
-be combined with an object mapper like Jackson to quickly transform well known string representations to Java objects.
+Default transformers allow you to specific a transformer that will be used when
+there is no transform defined. This can be combined with an object mapper like
+Jackson to quickly transform well-known string representations to Java objects.
 
  * `@DefaultParameterTransformer`
  * `@DefaultDataTableEntryTransformer`
@@ -208,11 +233,11 @@ public class DataTableSteps {
 }
 ```
 
-# Transposing Tables
+### Transposing Tables
 
 A data table can be transposed by annotating the data table parameter (or the
 parameter the data table will be converted into) with `@Transpose`. This means
-the keys will be in the first column rather then the first row.
+the keys will be in the first column rather than the first row.
 
 
 ```gherkin
@@ -251,3 +276,7 @@ public class DataTableSteps {
     }
 }
 ```
+
+## DocString type
+
+TODO: Show doc string converters
